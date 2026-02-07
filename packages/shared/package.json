@@ -1,0 +1,16 @@
+{
+  "name": "@my-game/shared",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "typecheck": "npx tsc --noEmit"
+  },
+  "devDependencies": {
+    "@party-kit/core": "^0.1.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@party-kit/core": "^0.1.0"
+  }
+}

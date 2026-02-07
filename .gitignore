@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+*.log
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# React Native
+*.keystore
+!debug.keystore
+android/app/build/
+android/build/
+ios/build/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Testing
+coverage/
+
+# Temporary files
+*.tmp
+*.temp

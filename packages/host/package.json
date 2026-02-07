@@ -1,0 +1,29 @@
+{
+  "name": "@my-game/host",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "prebuild": "expo prebuild"
+  },
+  "dependencies": {
+    "@party-kit/host": "^0.2.0",
+    "react-native-fs": "^2.20.0",
+    "expo": "~54.0.33",
+    "expo-status-bar": "~3.0.9",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-qrcode-svg": "^6.3.21",
+    "react-native-svg": "^15.15.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "@party-kit/cli": "^0.0.5",
+    "@types/react": "~19.1.10",
+    "babel-preset-expo": "^54.0.10",
+    "typescript": "~5.9.2"
+  }
+}

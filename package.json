@@ -1,0 +1,20 @@
+{
+  "name": "buzz-party-game",
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "install:all": "bun install",
+    "dev:client": "cd packages/client && bun run dev",
+    "build:client": "cd packages/client && bun run build",
+    "typecheck:shared": "cd packages/shared && tsc --noEmit",
+    "typecheck:client": "cd packages/client && tsc --noEmit",
+    "bundle:client": "cd packages/host && bunx party-kit bundle --source ../client --output ./android/app/src/main/assets/www",
+    "build:android": "bun run bundle:client && cd packages/host && npx expo run:android"
+  },
+  "dependencies": {
+    "@party-kit/host": "^0.2.0",
+    "expo-build-properties": "^1.0.10"
+  }
+}
