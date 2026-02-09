@@ -1,6 +1,6 @@
 # Buzz TV Party Game
 
-The official starter project for [`@couch-kit`](https://github.com/faluciano/tv-part-library) — a library that turns an Android TV into a local party-game console with phones as controllers.
+The official starter project for [`@couch-kit`](https://github.com/faluciano/react-native-couch-kit) — a library that turns an Android TV into a local party-game console with phones as controllers.
 
 Buzz is a multiplayer buzzer game that demonstrates the complete `@couch-kit` setup: shared reducer, TV host app, phone web controller, and Android build pipeline. Clone it and modify the game logic to build your own party game.
 
@@ -271,4 +271,4 @@ MIT
 - Expo SDK: 54
 - React Native: 0.81.5
 
-Build your own party games by modifying the game reducer in `packages/shared/index.ts`. Add new actions, change the scoring logic, or create entirely new game modes! See the [`@couch-kit` documentation](https://github.com/faluciano/tv-part-library) for the full API reference.
+Build your own party games by modifying the game reducer in `packages/shared/index.ts`. Add new actions, change the scoring logic, or create entirely new game modes! See the [`@couch-kit` documentation](https://github.com/faluciano/react-native-couch-kit) for the full API reference.
