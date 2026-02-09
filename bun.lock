@@ -5,7 +5,7 @@
     "": {
       "name": "buzz-party-game",
       "dependencies": {
-        "@couch-kit/host": "^0.5.1",
+        "@couch-kit/host": "^0.5.2",
         "expo-build-properties": "^1.0.10",
       },
     },
@@ -13,7 +13,7 @@
       "name": "@my-game/client",
       "version": "1.0.0",
       "dependencies": {
-        "@couch-kit/client": "^0.4.2",
+        "@couch-kit/client": "^0.4.3",
         "@my-game/shared": "workspace:*",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -30,7 +30,7 @@
       "name": "@my-game/host",
       "version": "1.0.0",
       "dependencies": {
-        "@couch-kit/host": "^0.5.1",
+        "@couch-kit/host": "^0.5.2",
         "expo": "~54.0.33",
         "expo-status-bar": "~3.0.9",
         "react": "19.1.0",
@@ -40,7 +40,7 @@
         "react-native-svg": "^15.15.1",
       },
       "devDependencies": {
-        "@couch-kit/cli": "^0.1.0",
+        "@couch-kit/cli": "^0.1.1",
         "@types/react": "~19.1.10",
         "babel-preset-expo": "^54.0.10",
         "typescript": "~5.9.2",
@@ -50,11 +50,11 @@
       "name": "@my-game/shared",
       "version": "1.0.0",
       "devDependencies": {
-        "@couch-kit/core": "^0.3.1",
+        "@couch-kit/core": "^0.3.2",
         "typescript": "^5.0.0",
       },
       "peerDependencies": {
-        "@couch-kit/core": "^0.3.1",
+        "@couch-kit/core": "^0.3.2",
       },
     },
   },
@@ -247,13 +247,13 @@
 
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
 
-    "@couch-kit/cli": ["@couch-kit/cli@0.1.0", "", { "dependencies": { "@couch-kit/core": "0.3.1", "commander": "^12.0.0" }, "bin": { "couch-kit": "dist/index.js" } }, "sha512-JINm1bb26K14Oupaj6Om4KcGqrn1XhLBNKaPoCxF2LmUaGyDy+rmW3u2H2G6YB53slw1QabaZrPdO0N/pTRZ/w=="],
+    "@couch-kit/cli": ["@couch-kit/cli@0.1.1", "", { "dependencies": { "@couch-kit/core": "0.3.2", "commander": "^12.0.0" }, "bin": { "couch-kit": "dist/index.js" } }, "sha512-vWKT9zdn04gTU51EM+VB1h9M+gjzZimeG2FjfmWdQg+Cm/Efsk801JaowsE+BNnYSDgjwMGwqr6nvKKMv7AEyw=="],
 
-    "@couch-kit/client": ["@couch-kit/client@0.4.2", "", { "dependencies": { "@couch-kit/core": "0.3.1" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-R+Zzu5kOIFF99KBxffDgUwi4G5R9yLUNkspy1TDmgwhVVUe1zD44/VWQnShyzPdzIa4lkyG5DGnEHOvPpoyLzw=="],
+    "@couch-kit/client": ["@couch-kit/client@0.4.3", "", { "dependencies": { "@couch-kit/core": "0.3.2" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-/IHobe1ufbIz2WHzRl6Zq6UJ3ogcWWXvBJcJj3LRBTGO9K+vVN+NpvZQuscWwuBmMzj4EI6cijuOTrrQttD+BQ=="],
 
-    "@couch-kit/core": ["@couch-kit/core@0.3.1", "", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-zt7O7LpmewxsZcZtc1wyMYX+gAWwjrYiCMtYC6Pw+OcQsWn2ySVsetJalNswgytxzyzt3l6biPiXRmtD6/pfAQ=="],
+    "@couch-kit/core": ["@couch-kit/core@0.3.2", "", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-e8LdCdtejZsRDXURVj5r+XssIqISqiO74+3vgSDVzFs3d2+dReTuc21trFnWAUzGSVAdB3u03peEjITRp6Z6LQ=="],
 
-    "@couch-kit/host": ["@couch-kit/host@0.5.1", "", { "dependencies": { "@couch-kit/core": "0.3.1", "buffer": "^6.0.3", "js-sha1": "^0.7.0", "react-native-fs": "^2.20.0", "react-native-network-info": "^5.2.1", "react-native-nitro-http-server": "^1.5.4", "react-native-tcp-socket": "^6.0.6" }, "peerDependencies": { "react": "*", "react-native": "*", "react-native-nitro-modules": ">=0.33.0" } }, "sha512-P05AzDjZCc391fg+i7bc2SuhJ3whx0L5LCDsKFbIF5BrICmEvgT/ljrz39b8oDVdw0vhcTrQr0AbD7lAu+qD8g=="],
+    "@couch-kit/host": ["@couch-kit/host@0.5.2", "", { "dependencies": { "@couch-kit/core": "0.3.2", "buffer": "^6.0.3", "js-sha1": "^0.7.0", "react-native-fs": "^2.20.0", "react-native-network-info": "^5.2.1", "react-native-nitro-http-server": "^1.5.4", "react-native-tcp-socket": "^6.0.6" }, "peerDependencies": { "react": "*", "react-native": "*", "react-native-nitro-modules": ">=0.33.0" } }, "sha512-Gt5PXOTt5pvzkAh2u9wQ5+vu3zEnu7tN6KgMXzqfq+OeFtz/P66diCvgJQK3nk8CKsu5NeEmFjkQ/NUtAqmi3A=="],
 
     "@esbuild/android-arm": ["@esbuild/android-arm@0.18.20", "", { "os": "android", "cpu": "arm" }, "sha512-fyi7TDI/ijKKNZTUJAQqiG5T7YjJXgnzkURqmGj13C6dCqckZBLdl4h7bkhHt/t0WP+zO9/zwroDvANaOqO5Sw=="],
 
