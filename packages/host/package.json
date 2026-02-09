@@ -10,7 +10,7 @@
     "prebuild": "expo prebuild"
   },
   "dependencies": {
-    "@party-kit/host": "^0.2.0",
+    "@couch-kit/host": "^0.3.0",
     "react-native-fs": "^2.20.0",
     "expo": "~54.0.33",
     "expo-status-bar": "~3.0.9",
@@ -21,7 +21,7 @@
   },
   "private": true,
   "devDependencies": {
-    "@party-kit/cli": "^0.0.5",
+    "@couch-kit/cli": "^0.0.6",
     "@types/react": "~19.1.10",
     "babel-preset-expo": "^54.0.10",
     "typescript": "~5.9.2"

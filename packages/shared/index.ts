@@ -1,4 +1,4 @@
-import { IGameState, IPlayer } from "@party-kit/core";
+import { IGameState, IPlayer } from "@couch-kit/core";
 
 export interface GameState extends IGameState {
   score: number;
@@ -7,7 +7,10 @@ export interface GameState extends IGameState {
 export type GameAction =
   | { type: "BUZZ" }
   | { type: "RESET" }
-  | { type: "PLAYER_JOINED"; payload: { id: string; name?: string; avatar?: string; secret?: string } }
+  | {
+      type: "PLAYER_JOINED";
+      payload: { id: string; name?: string; avatar?: string; secret?: string };
+    }
   | { type: "PLAYER_LEFT"; payload: { playerId: string } };
 
 export const initialState: GameState = {
@@ -16,7 +19,10 @@ export const initialState: GameState = {
   score: 0,
 };
 
-export const gameReducer = (state: GameState, action: GameAction): GameState => {
+export const gameReducer = (
+  state: GameState,
+  action: GameAction,
+): GameState => {
   switch (action.type) {
     case "BUZZ":
       return { ...state, score: state.score + 1 };

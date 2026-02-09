@@ -1,8 +1,8 @@
 # Buzz TV Party Game
 
-The official starter project for [`@party-kit`](https://github.com/faluciano/react-native-party-kit) — a library that turns an Android TV into a local party-game console with phones as controllers.
+The official starter project for [`@couch-kit`](https://github.com/faluciano/tv-part-library) — a library that turns an Android TV into a local party-game console with phones as controllers.
 
-Buzz is a multiplayer buzzer game that demonstrates the complete `@party-kit` setup: shared reducer, TV host app, phone web controller, and Android build pipeline. Clone it and modify the game logic to build your own party game.
+Buzz is a multiplayer buzzer game that demonstrates the complete `@couch-kit` setup: shared reducer, TV host app, phone web controller, and Android build pipeline. Clone it and modify the game logic to build your own party game.
 
 ## How It Works
 
@@ -55,15 +55,27 @@ export ANDROID_HOME=~/Library/Android/sdk
 bun install
 ```
 
-### 2. Bundle the Client and Build for Android
+### 2. Generate the Native Android Project (First Time Only)
 
-This builds the web controller, copies it into the host's Android assets, and runs the app:
+Expo needs to generate the native Android project files before you can build. Run this once after cloning, or whenever you add/change native dependencies or Expo plugins:
 
 ```bash
+cd packages/host
+bun run prebuild
+```
+
+> **Important:** `expo prebuild` clears and regenerates the `android/` directory. Any files previously placed there (including bundled client assets) will be deleted. Always run `prebuild` **before** bundling the client.
+
+### 3. Bundle the Client and Build for Android
+
+After prebuild has generated the native project, bundle the web controller into the host's Android assets and build the app:
+
+```bash
+bun run bundle:client
 bun run build:android
 ```
 
-Or run the steps separately:
+Or run each step individually:
 
 ```bash
 # Build & bundle the web controller into host assets
@@ -73,7 +85,16 @@ bun run bundle:client
 cd packages/host && npx expo run:android
 ```
 
-### 3. Connect and Play
+For a complete first-time build from a fresh clone:
+
+```bash
+bun install
+cd packages/host && bun run prebuild && cd ../..
+bun run bundle:client
+cd packages/host && npx expo run:android
+```
+
+### 4. Connect and Play
 
 1. The TV/device will display a QR code and a URL
 2. Scan the QR code with your phone (or open the URL in a browser on the same network)
@@ -135,6 +156,7 @@ bun run build:android
 ### Available Scripts
 
 **Root Level:**
+
 ```bash
 bun install              # Install all dependencies
 bun run dev:client       # Start client Vite dev server
@@ -144,6 +166,7 @@ bun run build:android    # bundle:client + expo run:android
 ```
 
 **Client (Web Controller):**
+
 ```bash
 cd packages/client
 bun run dev             # Start development server
@@ -152,9 +175,11 @@ bun run preview         # Preview production build
 ```
 
 **Host (Android TV - Expo):**
+
 ```bash
 cd packages/host
-bun run prebuild        # Generate native project files (run once, or after adding native deps)
+bun run prebuild        # Generate native project files (first time, or after adding native deps/plugins)
+                        # WARNING: This clears the android/ directory — re-run bundle:client afterward
 bun run android         # Run on Android device/emulator
 bun run start           # Start Expo development server
 ```
@@ -167,25 +192,30 @@ The game uses a Redux-like pattern with a shared reducer:
 - **Actions**:
   - `BUZZ`: Increments the score by 1
   - `RESET`: Resets the score to 0
-  - `PLAYER_JOINED`: Adds a player to the state (dispatched automatically by `@party-kit/host`)
-  - `PLAYER_LEFT`: Marks a player as disconnected (dispatched automatically by `@party-kit/host`)
+  - `PLAYER_JOINED`: Adds a player to the state (dispatched automatically by `@couch-kit/host`)
+  - `PLAYER_LEFT`: Marks a player as disconnected (dispatched automatically by `@couch-kit/host`)
 
 The reducer runs on both the TV (host) and web controller (client), ensuring both sides stay in sync.
 
 ## Package Details
 
 ### @my-game/shared
+
 Contains the game state interface, actions, and reducer. This ensures both host and client use the same logic.
 
 ### @my-game/host
-React Native app for Android TV. Uses `@party-kit/host` to:
+
+React Native app for Android TV. Uses `@couch-kit/host` to:
+
 - Start a WebSocket server
 - Serve the web controller files
 - Manage game state
 - Display the game UI
 
 ### @my-game/client
-Vite + React web app for smartphones. Uses `@party-kit/client` to:
+
+Vite + React web app for smartphones. Uses `@couch-kit/client` to:
+
 - Connect to the TV via WebSocket
 - Display the controller UI
 - Send actions (BUZZ) to the host
@@ -193,27 +223,37 @@ Vite + React web app for smartphones. Uses `@party-kit/client` to:
 ## Troubleshooting
 
 ### JDK version error ("Unsupported class file major version")
+
 Gradle requires JDK 17. Verify with:
+
 ```bash
 $JAVA_HOME/bin/java -version  # Should show 17.x.x
 ```
+
 If wrong, set `JAVA_HOME` to JDK 17 (see Prerequisites above).
 
 ### Android SDK not found
+
 Set the `ANDROID_HOME` environment variable (see Prerequisites above).
 
 ### Client page is blank after scanning QR code
-The web controller wasn't bundled into the host. Run:
+
+The web controller wasn't bundled into the host. This can happen if you ran `expo prebuild` after `bundle:client`, since prebuild clears the `android/` directory. Fix by re-bundling:
+
 ```bash
 bun run bundle:client
 ```
+
 Then rebuild the Android app.
 
 ### WebSocket connection fails
+
 Ensure both devices are on the same WiFi network. The host device acts as the server, so it needs to be discoverable on the local network.
 
 ### Metro bundler port conflict
+
 If port 8081 is already in use, Expo will prompt to use an alternative port. You can also clear Metro cache:
+
 ```bash
 cd packages/host
 bun run start --reset-cache
@@ -225,10 +265,10 @@ MIT
 
 ## Current Status
 
-- @party-kit/host: ^0.2.0
-- @party-kit/client: ^0.2.0
-- @party-kit/core: 0.1.0
+- @couch-kit/host: ^0.3.0
+- @couch-kit/client: ^0.3.0
+- @couch-kit/core: ^0.2.0
 - Expo SDK: 54
 - React Native: 0.81.5
 
-Build your own party games by modifying the game reducer in `packages/shared/index.ts`. Add new actions, change the scoring logic, or create entirely new game modes! See the [`@party-kit` documentation](https://github.com/faluciano/react-native-party-kit) for the full API reference.
+Build your own party games by modifying the game reducer in `packages/shared/index.ts`. Add new actions, change the scoring logic, or create entirely new game modes! See the [`@couch-kit` documentation](https://github.com/faluciano/tv-part-library) for the full API reference.
