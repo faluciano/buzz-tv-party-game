@@ -7,10 +7,18 @@ import {
 } from "@couch-kit/host";
 import QRCode from "react-native-qrcode-svg";
 import manifest from "./src/www-manifest.json";
-import { gameReducer, initialState } from "@my-game/shared";
+import {
+  gameReducer,
+  initialState,
+  GameState,
+  GameAction,
+} from "@my-game/shared";
 
 const GameScreen = () => {
-  const { state, serverUrl, serverError } = useGameHost();
+  const { state, serverUrl, serverError } = useGameHost<
+    GameState,
+    GameAction
+  >();
 
   // Append /index to the server URL for the client page
   const clientUrl = serverUrl ? `${serverUrl}/index` : null;
