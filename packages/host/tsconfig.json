@@ -1,6 +1,12 @@
 {
   "compilerOptions": {
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@my-game/shared": ["../shared"],
+      "@my-game/shared/*": ["../shared/*"]
+    }
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "include": [".", "../shared"]
 }
