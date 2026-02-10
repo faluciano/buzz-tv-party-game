@@ -10,7 +10,7 @@
     "prebuild": "expo prebuild"
   },
   "dependencies": {
-    "@couch-kit/host": "^0.5.2",
+    "@couch-kit/host": "^0.6.0",
     "react-native-fs": "^2.20.0",
     "expo": "~54.0.33",
     "expo-status-bar": "~3.0.9",

@@ -30,7 +30,7 @@
       "name": "@my-game/host",
       "version": "1.0.0",
       "dependencies": {
-        "@couch-kit/host": "^0.5.2",
+        "@couch-kit/host": "^0.6.0",
         "expo": "~54.0.33",
         "expo-status-bar": "~3.0.9",
         "react": "19.1.0",
@@ -1293,6 +1293,8 @@
 
     "@istanbuljs/load-nyc-config/js-yaml": ["js-yaml@3.14.2", "", { "dependencies": { "argparse": "^1.0.7", "esprima": "^4.0.0" }, "bin": { "js-yaml": "bin/js-yaml.js" } }, "sha512-PMSmkqxr106Xa156c2M265Z+FTrPl+oxd/rgOQy2tijQeK5TxQ43psO1ZCwhVOSdnn+RzkzlRz/eY4BgJBYVpg=="],
 
+    "@my-game/host/@couch-kit/host": ["@couch-kit/host@0.6.0", "", { "dependencies": { "@couch-kit/core": "0.3.3", "buffer": "^6.0.3", "js-sha1": "^0.7.0", "react-native-fs": "^2.20.0", "react-native-network-info": "^5.2.1", "react-native-nitro-http-server": "^1.5.4", "react-native-tcp-socket": "^6.0.6" }, "peerDependencies": { "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-nitro-modules": ">=0.33.0" } }, "sha512-KJn5BQjEdFcnjkLJXvTlU66hhb40VS3OfjbbY6Xd2xwOiQRAYeu7KKrryJg23pVSzR/TeExSgP+oAC2Z+Dxk8Q=="],
+
     "@my-game/host/@types/react": ["@types/react@19.1.17", "", { "dependencies": { "csstype": "^3.0.2" } }, "sha512-Qec1E3mhALmaspIrhWt9jkQMNdw6bReVu64mjvhbhq2NFPftLPVr+l1SZgmw/66WwBNpDh7ao5AT6gF5v41PFA=="],
 
     "@my-game/host/react": ["react@19.1.0", "", {}, "sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg=="],
@@ -1430,6 +1432,8 @@
     "@expo/metro-config/glob/minimatch": ["minimatch@10.1.1", "", { "dependencies": { "@isaacs/brace-expansion": "^5.0.0" } }, "sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ=="],
 
     "@istanbuljs/load-nyc-config/js-yaml/argparse": ["argparse@1.0.10", "", { "dependencies": { "sprintf-js": "~1.0.2" } }, "sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg=="],
+
+    "@my-game/host/@couch-kit/host/@couch-kit/core": ["@couch-kit/core@0.3.3", "", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-rulWBrSaSrbcgXnOhij55SRPRCdQknnDdXirqwz3vyficruX+cd5q3ElAmVYljOQkhGov63h9CAeYAFajYl4Dw=="],
 
     "compression/debug/ms": ["ms@2.0.0", "", {}, "sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A=="],
 

@@ -263,12 +263,4 @@ bun run start --reset-cache
 
 MIT
 
-## Current Status
-
-- @couch-kit/host: ^0.3.0
-- @couch-kit/client: ^0.3.0
-- @couch-kit/core: ^0.2.0
-- Expo SDK: 54
-- React Native: 0.81.5
-
 Build your own party games by modifying the game reducer in `packages/shared/index.ts`. Add new actions, change the scoring logic, or create entirely new game modes! See the [`@couch-kit` documentation](https://github.com/faluciano/react-native-couch-kit) for the full API reference.
