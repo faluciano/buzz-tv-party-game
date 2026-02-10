@@ -1,138 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  ActivityIndicator,
-} from "react-native";
-import { GameHostProvider, useGameHost } from "@couch-kit/host";
+  GameHostProvider,
+  useGameHost,
+  useExtractAssets,
+} from "@couch-kit/host";
 import QRCode from "react-native-qrcode-svg";
-import RNFS from "react-native-fs";
+import manifest from "./src/www-manifest.json";
 import { gameReducer, initialState } from "@my-game/shared";
-
-/**
- * Recursively copy a directory from Android APK assets to the real filesystem.
- * Required because RNFS.copyFileAssets only copies individual files, not directories.
- */
-async function copyAssetsDirectory(
-  assetDir: string,
-  destDir: string,
-): Promise<void> {
-  // Ensure the destination directory exists
-  const destExists = await RNFS.exists(destDir);
-  if (!destExists) {
-    await RNFS.mkdir(destDir);
-  }
-
-  const entries = await RNFS.readDirAssets(assetDir);
-
-  for (const entry of entries) {
-    const assetPath = assetDir ? `${assetDir}/${entry.name}` : entry.name;
-    const destPath = `${destDir}/${entry.name}`;
-
-    if (entry.isDirectory()) {
-      await copyAssetsDirectory(assetPath, destPath);
-    } else {
-      await RNFS.copyFileAssets(assetPath, destPath);
-    }
-  }
-}
-
-/**
- * Hook that extracts the bundled www/ assets from the APK to the device filesystem.
- * Only runs on Android. On iOS, returns undefined (the library default works).
- */
-function useExtractAssets() {
-  const [staticDir, setStaticDir] = useState<string | undefined>(undefined);
-  const [loading, setLoading] = useState(Platform.OS === "android");
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (Platform.OS !== "android") return;
-
-    const extract = async () => {
-      try {
-        const destDir = `${RNFS.DocumentDirectoryPath}/www`;
-        console.log(
-          "[Buzz] DocumentDirectoryPath:",
-          RNFS.DocumentDirectoryPath,
-        );
-        console.log("[Buzz] Extracting assets to:", destDir);
-
-        // Always re-extract to ensure fresh assets after app updates
-        const exists = await RNFS.exists(destDir);
-        if (exists) {
-          console.log("[Buzz] Removing old www directory");
-          await RNFS.unlink(destDir);
-        }
-
-        // Check if www assets exist in the APK
-        const hasAssets = await RNFS.existsAssets("www");
-        console.log("[Buzz] APK has www assets:", hasAssets);
-        if (!hasAssets) {
-          setError(
-            'No www assets found in APK. Run "bun run bundle:client" first.',
-          );
-          setLoading(false);
-          return;
-        }
-
-        await copyAssetsDirectory("www", destDir);
-
-        // Verify extraction — list all files recursively
-        const listRecursive = async (
-          dir: string,
-          prefix = "",
-        ): Promise<string[]> => {
-          const entries = await RNFS.readDir(dir);
-          const results: string[] = [];
-          for (const entry of entries) {
-            const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
-            if (entry.isDirectory()) {
-              results.push(`${rel}/ (dir)`);
-              results.push(...(await listRecursive(entry.path, rel)));
-            } else {
-              results.push(`${rel} (${entry.size}B)`);
-            }
-          }
-          return results;
-        };
-
-        const allFiles = await listRecursive(destDir);
-        console.log(
-          "[Buzz] All extracted files:",
-          JSON.stringify(allFiles, null, 2),
-        );
-
-        // Verify index.html is readable
-        const indexPath = `${destDir}/index.html`;
-        const indexExists = await RNFS.exists(indexPath);
-        console.log("[Buzz] index.html exists:", indexExists, "at", indexPath);
-        if (indexExists) {
-          const indexContent = await RNFS.readFile(indexPath, "utf8");
-          console.log("[Buzz] index.html size:", indexContent.length, "chars");
-          console.log(
-            "[Buzz] index.html preview:",
-            indexContent.substring(0, 200),
-          );
-        }
-
-        setStaticDir(destDir);
-        console.log("[Buzz] staticDir set to:", destDir);
-        setLoading(false);
-      } catch (e) {
-        console.error("[Buzz] Asset extraction failed:", (e as Error).message);
-        setError(`Failed to extract assets: ${(e as Error).message}`);
-        setLoading(false);
-      }
-    };
-
-    extract();
-  }, []);
-
-  return { staticDir, loading, error };
-}
 
 const GameScreen = () => {
   const { state, serverUrl, serverError } = useGameHost();
@@ -192,7 +67,7 @@ const GameScreen = () => {
 };
 
 export default function App() {
-  const { staticDir, loading, error } = useExtractAssets();
+  const { staticDir, loading, error } = useExtractAssets(manifest);
 
   if (loading) {
     return (
