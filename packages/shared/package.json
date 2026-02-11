@@ -7,10 +7,10 @@
     "typecheck": "npx tsc --noEmit"
   },
   "devDependencies": {
-    "@couch-kit/core": "^0.3.2",
+    "@couch-kit/core": "^0.4.0",
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
-    "@couch-kit/core": "^0.3.2"
+    "@couch-kit/core": "^0.4.0"
   }
 }
