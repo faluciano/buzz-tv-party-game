@@ -14,7 +14,7 @@
     "build:android": "bun run bundle:client && cd packages/host && npx expo run:android"
   },
   "dependencies": {
-    "@couch-kit/host": "^1.2.2",
+    "@couch-kit/host": "^1.3.0",
     "expo-build-properties": "^1.0.10"
   }
 }

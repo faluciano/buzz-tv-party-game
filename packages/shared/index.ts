@@ -9,7 +9,7 @@ export type GameAction =
   | { type: "RESET" }
   | {
       type: "PLAYER_JOINED";
-      payload: { id: string; name?: string; avatar?: string; secret?: string };
+      payload: { id: string; name?: string; avatar?: string };
     }
   | { type: "PLAYER_LEFT"; payload: { playerId: string } };
 
