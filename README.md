@@ -109,13 +109,13 @@ To verify everything is set up correctly:
 # 1. Verify dependencies are installed
 bun install
 
-# 2. Verify TypeScript compilation
-cd packages/client && bun run build
-# Should show: "built in XXXms" with no errors
+# 2. Typecheck all packages
+bun run typecheck
+# Should complete with no errors
 
-# 3. Verify shared package types
-cd packages/shared && npx tsc --noEmit
-# Should complete with no output (success)
+# 3. Build the client
+bun run build:client
+# Should show: "built in XXXms" with no errors
 
 # 4. Start the client dev server
 cd packages/client && bun run dev
@@ -158,6 +158,8 @@ bun run build:android
 **Root Level:**
 
 ```bash
+bun run build            # Typecheck + build client + bundle into host
+bun run typecheck        # Typecheck shared and client packages
 bun install              # Install all dependencies
 bun run dev:client       # Start client Vite dev server
 bun run build:client     # Build client for production
@@ -194,8 +196,12 @@ The game uses a Redux-like pattern with a shared reducer:
   - `RESET`: Resets the score to 0
   - `PLAYER_JOINED`: Adds a player to the state (dispatched automatically by `@couch-kit/host`)
   - `PLAYER_LEFT`: Marks a player as disconnected (dispatched automatically by `@couch-kit/host`)
+  - `PLAYER_RECONNECTED`: Restores a returning player's state on reconnection (dispatched automatically by `@couch-kit/host`)
+  - `PLAYER_REMOVED`: Removes a disconnected player after timeout — default 5 minutes (dispatched automatically by `@couch-kit/host`)
 
 The reducer runs on both the TV (host) and web controller (client), ensuring both sides stay in sync.
+
+Player identity is stable across page refreshes and reconnections — `@couch-kit` handles session recovery automatically. The same device always gets the same `playerId`.
 
 ## Package Details
 
