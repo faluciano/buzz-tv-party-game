@@ -10,10 +10,9 @@
     "prebuild": "expo prebuild"
   },
   "dependencies": {
-    "@couch-kit/host": "^1.5.1",
+    "@couch-kit/host": "^1.4.0",
     "expo-file-system": "~18.0.12",
     "expo-network": "~7.1.1",
-    "react-native-tcp-socket": "^6.2.0",
     "expo": "~54.0.33",
     "expo-status-bar": "~3.0.9",
     "react": "19.1.0",
@@ -23,7 +22,7 @@
   },
   "private": true,
   "devDependencies": {
-    "@couch-kit/cli": "^0.2.6",
+    "@couch-kit/cli": "^0.2.4",
     "@types/react": "~19.1.10",
     "babel-preset-expo": "^54.0.10",
     "typescript": "~5.9.2"
