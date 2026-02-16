@@ -1,6 +1,7 @@
 {
   "name": "buzz-party-game",
   "version": "1.0.0",
+  "license": "MIT",
   "workspaces": [
     "packages/*"
   ],
