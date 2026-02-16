@@ -36,7 +36,7 @@ const couchKitCorePath = resolvePackage("@couch-kit/core", [
 config.watchFolders = [root, sharedPackage, couchKitHostPath, couchKitCorePath];
 
 // Module resolution paths — include the host's own node_modules inside the .bun/ cache
-// so Metro can find all transitive deps (js-sha1, react-native-tcp-socket, etc.)
+// so Metro can find all transitive deps (js-sha1, etc.)
 config.resolver.nodeModulesPaths = [
   hostNodeModules,
   path.resolve(root, "node_modules"),
