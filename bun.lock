@@ -18,6 +18,7 @@
         "react-dom": "^18.2.0",
       },
       "devDependencies": {
+        "@couch-kit/devtools": "^0.2.0",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
         "@vitejs/plugin-react": "^4.0.0",
@@ -253,6 +254,8 @@
     "@couch-kit/client": ["@couch-kit/client@0.8.0", "", { "dependencies": { "@couch-kit/core": "0.8.0" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-mAIPTuKikCSfUzyeuijN5Jz54hixcdMonuXhjP0JTxZlkKEIhf523rh4lmFAIlyq4HKrzEoX3rluX99OVjNezA=="],
 
     "@couch-kit/core": ["@couch-kit/core@0.8.0", "", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-vyalQfvDJu8oVQKH7DQU2tbdorb03MPc3olAk7dWnYgT3GeYa09i07UJt49vFFtHjtYaj++oNOo8wYjiae/BBg=="],
+
+    "@couch-kit/devtools": ["@couch-kit/devtools@0.2.0", "", { "dependencies": { "@couch-kit/client": "0.8.0" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-WhVmLcKeBNorQf0EdfQvuTWLbEviWTeq8tu3M9w4jTUq1GGAG3MXsKyHpRmOAx2VBe32Z4xOFrIaodpeqRf18g=="],
 
     "@couch-kit/host": ["@couch-kit/host@1.6.0", "", { "dependencies": { "@couch-kit/core": "0.8.0", "buffer": "^6.0.3", "js-sha1": "^0.7.0", "react-native-nitro-http-server": "^1.5.4" }, "peerDependencies": { "expo": ">=51.0.0", "expo-file-system": ">=17.0.0", "expo-network": ">=7.0.0", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-nitro-modules": ">=0.33.0" } }, "sha512-720EJ1oE9cOvF2uzUUWAtTDoxtoo72v5AJ3/OoyrFu5a1N7uJU2R3BNErISBFYvXHyAuRWNSjqSHJgAckD55UA=="],
 
