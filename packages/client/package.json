@@ -11,11 +11,11 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@couch-kit/client": "^0.8.0",
+    "@couch-kit/client": "^0.8.1",
     "@my-game/shared": "workspace:*"
   },
   "devDependencies": {
-    "@couch-kit/devtools": "^0.2.0",
+    "@couch-kit/devtools": "^0.2.1",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.0.0",
