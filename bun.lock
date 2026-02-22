@@ -30,7 +30,7 @@
       "name": "@my-game/host",
       "version": "1.0.0",
       "dependencies": {
-        "@couch-kit/host": "^1.7.1",
+        "@couch-kit/host": "^1.7.2",
         "expo": "~54.0.33",
         "expo-file-system": "~18.0.12",
         "expo-network": "~7.1.1",
@@ -257,7 +257,7 @@
 
     "@couch-kit/devtools": ["@couch-kit/devtools@0.2.1", "", { "dependencies": { "@couch-kit/client": "0.8.1" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-NpSra6fhDd5upPY9ALcdl8O3Hg0Y0HX/pVdBOoAIyX90pQFElu9YuH0YaKMa1I5uWZqOySNB8SGzRUJKaKtYjg=="],
 
-    "@couch-kit/host": ["@couch-kit/host@1.7.1", "", { "dependencies": { "@couch-kit/core": "0.8.1", "buffer": "^6.0.3", "js-sha1": "^0.7.0", "react-native-nitro-http-server": "^1.5.4" }, "peerDependencies": { "expo": ">=51.0.0", "expo-file-system": ">=19.0.0", "expo-network": ">=7.0.0", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-nitro-modules": ">=0.33.0" } }, "sha512-afpJ89jfMIesPpHyVu7eAN8USnWRHnJOiqSwwEz45QNnydBOYR4PUCKU+2uU/rvZEOVmaIxRVjod8dV+PTufdA=="],
+    "@couch-kit/host": ["@couch-kit/host@1.7.2", "", { "dependencies": { "@couch-kit/core": "0.8.1", "buffer": "^6.0.3", "js-sha1": "^0.7.0", "react-native-nitro-http-server": "^1.5.4" }, "peerDependencies": { "expo": ">=51.0.0", "expo-file-system": ">=19.0.0", "expo-network": ">=7.0.0", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-nitro-modules": ">=0.33.0" } }, "sha512-575l4jlFARz8RqqAnSiEHHK+1Vb7eBcYipBJaHgNjRYzpnUjsG+HqZrsmet6vBsnImNPf7Z8bfaU3lobOm81eA=="],
 
     "@esbuild/android-arm": ["@esbuild/android-arm@0.18.20", "", { "os": "android", "cpu": "arm" }, "sha512-fyi7TDI/ijKKNZTUJAQqiG5T7YjJXgnzkURqmGj13C6dCqckZBLdl4h7bkhHt/t0WP+zO9/zwroDvANaOqO5Sw=="],
 
