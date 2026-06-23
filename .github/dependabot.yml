@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # Keep @couch-kit/* dependencies in sync with the latest published releases.
+  # This is the dogfooding gate: each PR runs the repo's CI (typecheck + build),
+  # and the dependabot-auto-merge workflow merges non-major bumps automatically.
+  - package-ecosystem: "npm"
+    directories:
+      - "/packages/*"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-name: "@couch-kit/*"
+    groups:
+      couch-kit:
+        patterns:
+          - "@couch-kit/*"
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "couch-kit-update"
