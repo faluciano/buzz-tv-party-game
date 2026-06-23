@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "schedule": ["before 9am on monday"],
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "description": "This repo dogfoods couch-kit — only manage @couch-kit/* dependencies.",
+      "matchPackageNames": ["*"],
+      "enabled": false
+    },
+    {
+      "description": "Track every @couch-kit package, grouped into a single PR.",
+      "matchPackageNames": [
+        "@couch-kit/core",
+        "@couch-kit/client",
+        "@couch-kit/host",
+        "@couch-kit/devtools",
+        "@couch-kit/cli"
+      ],
+      "enabled": true,
+      "groupName": "couch-kit"
+    },
+    {
+      "description": "Auto-merge non-major @couch-kit updates once CI passes; majors are held for manual review.",
+      "matchPackageNames": [
+        "@couch-kit/core",
+        "@couch-kit/client",
+        "@couch-kit/host",
+        "@couch-kit/devtools",
+        "@couch-kit/cli"
+      ],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true
+    }
+  ]
+}
