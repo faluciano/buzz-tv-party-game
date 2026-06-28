@@ -12,13 +12,13 @@
       "name": "@my-game/client",
       "version": "1.0.0",
       "dependencies": {
-        "@couch-kit/client": "^0.8.5",
+        "@couch-kit/client": "^0.8.7",
         "@my-game/shared": "workspace:*",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
       },
       "devDependencies": {
-        "@couch-kit/devtools": "^0.2.5",
+        "@couch-kit/devtools": "^0.2.8",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
         "@vitejs/plugin-react": "^4.0.0",
@@ -30,7 +30,7 @@
       "name": "@my-game/host",
       "version": "1.0.0",
       "dependencies": {
-        "@couch-kit/host": "^1.7.8",
+        "@couch-kit/host": "^1.7.10",
         "expo": "~54.0.33",
         "expo-file-system": "~18.0.12",
         "expo-network": "~7.1.1",
@@ -253,13 +253,13 @@
 
     "@couch-kit/cli": ["@couch-kit/cli@0.3.5", "", { "dependencies": { "@couch-kit/core": "0.9.1", "commander": "^12.0.0" }, "bin": { "couch-kit": "dist/index.js" } }, "sha512-KcXmG6Y5Luu3zBJkoZukE9ZdmWKmqB5y3zMEAta3b688KdmMAVExVwWZNgzM9DG/l+7+oT1386FdDmtmMJOtdg=="],
 
-    "@couch-kit/client": ["@couch-kit/client@0.8.5", "", { "dependencies": { "@couch-kit/core": "0.9.1" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-0IIueT0hJVFmrlrT/yuaGA95btyKG2ogfFfCca+V5x/Fm85zvh2jra/EczyWTXiE/HCDbndgfF8Wxj9l133vWw=="],
+    "@couch-kit/client": ["@couch-kit/client@0.8.7", "", { "dependencies": { "@couch-kit/core": "0.9.1" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-SjhS2conOTBEJyGp27HmnmnpIVDACqTL0lxaC5S2iCdT8Mhe9xr2jiFIrG0VpV4aBvx6pL7UnaAaw/FAR8kCvg=="],
 
     "@couch-kit/core": ["@couch-kit/core@0.9.1", "", {}, "sha512-UUd+sbzK1cBP5rCEvJWnAgd9clIoIYzIGgPFOpTRD1JnrUHp/duu5abVXXvGgkJ0uSCP/z/nCbDMWP+pdgh78g=="],
 
-    "@couch-kit/devtools": ["@couch-kit/devtools@0.2.5", "", { "dependencies": { "@couch-kit/client": "0.8.5" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-0CUTYNsU9umwVrp6TBRbmYUxrU3gJOcqfHqoQkFAbbFLqiMikPkKRhbmsC0g4Roga3v2PO8AvkKQ1kJrJB5Qiw=="],
+    "@couch-kit/devtools": ["@couch-kit/devtools@0.2.8", "", { "peerDependencies": { "@couch-kit/client": "0.8.7", "react": ">=18.0.0" } }, "sha512-ZniRCoX5N6vmYZB+33IZc5EvH9nQa7HwAb1K93qSl0278aLmrVodwyZu+5/TznbcBdCUvAr1Fk7HGxN+Rph1tw=="],
 
-    "@couch-kit/host": ["@couch-kit/host@1.7.8", "", { "dependencies": { "@couch-kit/core": "0.9.1", "buffer": "^6.0.3", "js-sha1": "^0.7.0", "react-native-nitro-http-server": "^1.6.1" }, "peerDependencies": { "expo": ">=51.0.0", "expo-file-system": ">=19.0.0", "expo-network": ">=7.0.0", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-nitro-modules": ">=0.33.0" } }, "sha512-hLJdZaIk07wkYnrD8r3UGgbb8iTcd28Cjw5Btlc8GpJDaH5PhAWlBqEkPVmuQ2/xvVfAVBo4oTjs4CxmV2Qd7g=="],
+    "@couch-kit/host": ["@couch-kit/host@1.7.10", "", { "dependencies": { "@couch-kit/core": "0.9.1", "buffer": "^6.0.3", "js-sha1": "^0.7.0", "react-native-nitro-http-server": "^1.6.1" }, "peerDependencies": { "expo": ">=51.0.0", "expo-file-system": ">=19.0.0", "expo-network": ">=7.0.0", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-nitro-modules": ">=0.33.0" } }, "sha512-zmoyr/s8ZphT8WzrLR9Eh/C/xj8xl0Wfly6npdrkpLUauvuG0Nn5zSUW/cIG6O1OWj5Vb5bp+4oANH3EXqoGTQ=="],
 
     "@esbuild/android-arm": ["@esbuild/android-arm@0.18.20", "", { "os": "android", "cpu": "arm" }, "sha512-fyi7TDI/ijKKNZTUJAQqiG5T7YjJXgnzkURqmGj13C6dCqckZBLdl4h7bkhHt/t0WP+zO9/zwroDvANaOqO5Sw=="],
 
