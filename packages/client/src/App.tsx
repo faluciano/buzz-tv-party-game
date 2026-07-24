@@ -1,11 +1,41 @@
-import { useGameClient } from "@couch-kit/client";
+import { useMemo } from "react";
+import { useGameClient, createRelayTransport } from "@couch-kit/client";
 import { gameReducer, initialState } from "@my-game/shared";
 
+// Default relay endpoint for cross-network play. Override at build time with
+// VITE_RELAY_URL, or per-link with a `&relay=wss://...` query param.
+const DEFAULT_RELAY_URL =
+  (import.meta.env.VITE_RELAY_URL as string | undefined) ??
+  "wss://couch-kit-relay.icycliff-4c194e2e.eastus.azurecontainerapps.io";
+
+/**
+ * Cross-network relay is **opt-in** via `?room=CODE` in the controller URL
+ * (the browser display links to it). Without a room code the controller
+ * connects over the default LAN WebSocket, exactly as before.
+ */
+function readRelayConfig(): { roomId: string; url: string } | null {
+  if (typeof window === "undefined") return null;
+  const params = new URLSearchParams(window.location.search);
+  const room = params.get("room");
+  if (!room) return null;
+  return { roomId: room, url: params.get("relay") ?? DEFAULT_RELAY_URL };
+}
+
 export default function App() {
+  const relay = useMemo(readRelayConfig, []);
+  const createTransport = useMemo(
+    () =>
+      relay
+        ? createRelayTransport({ url: relay.url, roomId: relay.roomId })
+        : undefined,
+    [relay],
+  );
+
   const { state, sendAction, status } = useGameClient({
     reducer: gameReducer,
     initialState,
     debug: true,
+    createTransport,
   });
 
   const handleBuzz = () => {
@@ -61,7 +91,7 @@ export default function App() {
           color: status === "connected" ? "#4ade80" : "#ef4444",
         }}
       >
-        WS: {status}
+        {relay ? `Relay room ${relay.roomId}` : "LAN"}: {status}
       </div>
     </div>
   );
