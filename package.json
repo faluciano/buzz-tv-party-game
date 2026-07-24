@@ -9,10 +9,13 @@
   "scripts": {
     "install:all": "bun install",
     "dev:client": "cd packages/client && bun run dev",
+    "dev:display": "cd packages/display && bun run dev",
     "build:client": "cd packages/client && bun run build",
+    "build:display": "cd packages/display && bun run build",
     "typecheck:shared": "cd packages/shared && bunx tsc",
     "typecheck:client": "cd packages/client && bunx tsc --noEmit",
-    "typecheck": "bun run typecheck:shared && bun run typecheck:client",
+    "typecheck:display": "cd packages/display && bunx tsc --noEmit",
+    "typecheck": "bun run typecheck:shared && bun run typecheck:client && bun run typecheck:display",
     "build": "bun run typecheck && bun run build:client && bun run bundle:client",
     "bundle:client": "cd packages/host && bunx couch-kit bundle --source ../client --output ./android/app/src/main/assets/www --manifest ./src/www-manifest.json",
     "build:android": "bun run bundle:client && cd packages/host && npx expo run:android"

@@ -26,6 +26,25 @@
         "vite": "^4.0.0",
       },
     },
+    "packages/display": {
+      "name": "@my-game/display",
+      "version": "1.0.0",
+      "dependencies": {
+        "@couch-kit/client": "^0.9.0",
+        "@couch-kit/core": "^0.9.3",
+        "@couch-kit/runtime": "^0.1.0",
+        "@my-game/shared": "workspace:*",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+      },
+      "devDependencies": {
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0",
+        "@vitejs/plugin-react": "^4.0.0",
+        "typescript": "^5.0.0",
+        "vite": "^4.0.0",
+      },
+    },
     "packages/host": {
       "name": "@my-game/host",
       "version": "1.0.0",
@@ -392,6 +411,8 @@
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
     "@my-game/client": ["@my-game/client@workspace:packages/client"],
+
+    "@my-game/display": ["@my-game/display@workspace:packages/display"],
 
     "@my-game/host": ["@my-game/host@workspace:packages/host"],
 

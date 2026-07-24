@@ -6,9 +6,19 @@ Buzz is a multiplayer buzzer game that demonstrates the complete `@couch-kit` se
 
 ## How It Works
 
-- **TV (Host)**: Runs on Android TV and displays the game state
-- **Smartphones (Controllers)**: Connect via QR code and act as buzzers
-- **Real-time Sync**: All devices stay synchronized via WebSocket
+Buzz runs in two modes that share the same reducer:
+
+- **Local (Android TV):** The TV host runs the game and phones connect over the
+  LAN via WebSocket — fully offline. This is the default.
+- **Cross-network (browser display):** A hosted browser page owns the game and
+  phones join from anywhere through a small relay server. See
+  [Cross-Network Play](#cross-network-play-browser-display) below.
+
+Common pieces:
+
+- **TV / Display (Host)**: displays the game state and owns the authoritative game
+- **Smartphones (Controllers)**: connect via QR code / room code and act as buzzers
+- **Real-time Sync**: all devices stay synchronized
 
 ## Project Structure
 
@@ -16,11 +26,48 @@ Buzz is a multiplayer buzzer game that demonstrates the complete `@couch-kit` se
 Buzz/
 ├── packages/
 │   ├── shared/          # Shared game logic and types
-│   ├── host/            # Android TV React Native app
-│   └── client/          # Web controller for smartphones
+│   ├── host/            # Android TV React Native app (LAN host)
+│   ├── client/          # Web controller for smartphones
+│   └── display/         # Cross-network browser display (owns the runtime via relay)
 ├── package.json         # Root workspace configuration
 └── README.md           # This file
 ```
+
+## Cross-Network Play (Browser Display)
+
+In addition to the offline Android TV mode, Buzz can run entirely in the browser
+so players on **different networks** can join — no native app required. A hosted
+**display page** (`packages/display`) owns the authoritative game and talks to
+phones through a small, game-agnostic **relay server** (from the `@couch-kit`
+repo, `services/relay`) that you deploy yourself.
+
+```
+ phone ─┐                       ┌─ display (owns the game, packages/display)
+ phone ─┼─ WebSocket ─▶ relay ◀─┘
+ phone ─┘                 (your Azure/Vercel/… deployment)
+```
+
+### Run it locally
+
+```bash
+# 1. Start the relay (from the @couch-kit repo): cd services/relay && bun run start
+# 2. Point the apps at your relay:
+export VITE_RELAY_URL="wss://<your-relay-host>"        # display + controller
+export VITE_CONTROLLER_URL="http://localhost:5173"     # display's join link (controller dev URL)
+
+bun run dev:display   # open the display; it shows a room code + join link
+bun run dev:client    # the controller — open it with ?room=CODE to join that room
+```
+
+The display generates a room code; open the controller at
+`<controller-url>?room=CODE` (the display shows the exact link) to connect a
+phone to that room. Without `?room=`, the controller uses the default LAN
+WebSocket, so the Android TV flow is unchanged.
+
+Both `packages/display` and `packages/client` are Vite apps — deploy them to any
+static host (e.g. Vercel) and set `VITE_RELAY_URL` / `VITE_CONTROLLER_URL` at
+build time. `RelayDisplayHost` is currently vendored in `packages/display`; it
+will move to a `@couch-kit/display` package.
 
 ## Prerequisites
 
