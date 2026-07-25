@@ -1,4 +1,5 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
+import QRCode from "react-qr-code";
 import {
   gameReducer,
   initialState,
@@ -62,7 +63,27 @@ export default function App() {
       <h1 style={{ margin: 0, fontSize: "3rem" }}>Buzz</h1>
 
       <div style={{ textAlign: "center" }}>
-        <div style={{ fontSize: "1rem", opacity: 0.7 }}>Join with room code</div>
+        {joinUrl && (
+          <div style={{ fontSize: "1rem", opacity: 0.7, marginBottom: "0.75rem" }}>
+            Scan to join
+          </div>
+        )}
+        {joinUrl && (
+          <div
+            style={{
+              display: "inline-block",
+              padding: "1rem",
+              backgroundColor: "white",
+              borderRadius: "0.75rem",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <QRCode value={joinUrl} size={200} />
+          </div>
+        )}
+        <div style={{ fontSize: "1rem", opacity: 0.7 }}>
+          {joinUrl ? "or enter room code" : "Join with room code"}
+        </div>
         <div style={{ fontSize: "5rem", fontWeight: 800, letterSpacing: "0.5rem" }}>
           {roomId}
         </div>

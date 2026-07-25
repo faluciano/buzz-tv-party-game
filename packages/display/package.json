@@ -9,12 +9,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@couch-kit/client": "^0.9.0",
+    "@couch-kit/core": "^0.9.3",
+    "@couch-kit/runtime": "^0.1.0",
+    "@my-game/shared": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@couch-kit/core": "^0.9.3",
-    "@couch-kit/client": "^0.9.0",
-    "@couch-kit/runtime": "^0.1.0",
-    "@my-game/shared": "workspace:*"
+    "react-qr-code": "^2.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
