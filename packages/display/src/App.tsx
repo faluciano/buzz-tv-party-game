@@ -6,7 +6,7 @@ import {
   type GameState,
   type GameAction,
 } from "@my-game/shared";
-import { RelayDisplayHost } from "./relay-display-host";
+import { RelayDisplayHost } from "@couch-kit/display";
 
 const RELAY_URL =
   import.meta.env.VITE_RELAY_URL ??
