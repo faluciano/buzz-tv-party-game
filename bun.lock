@@ -18,7 +18,7 @@
         "react-dom": "^18.2.0",
       },
       "devDependencies": {
-        "@couch-kit/devtools": "^0.2.10",
+        "@couch-kit/devtools": "^1.0.0",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
         "@vitejs/plugin-react": "^4.0.0",
@@ -276,7 +276,7 @@
 
     "@couch-kit/core": ["@couch-kit/core@0.9.3", "", {}, "sha512-8qo0goKd1FkACnWWZCsGHFZWeQqnz3uQgUgKaCoKOXf0AJ1fjF/EJSGAYrHNwPGtKy6Br6CUeJBCzULyQFxFYg=="],
 
-    "@couch-kit/devtools": ["@couch-kit/devtools@0.2.10", "", { "peerDependencies": { "@couch-kit/client": "0.8.9", "react": ">=18.0.0" } }, "sha512-TY6DJGl2iZHEjR3SoCIpNHD5UHaIDSMMlTblDSqlVjOQ18ZVDhZasYua0ckUCcr4chOFRnkigC/4plwcsPC82g=="],
+    "@couch-kit/devtools": ["@couch-kit/devtools@1.0.0", "", { "peerDependencies": { "@couch-kit/client": "0.9.0", "react": ">=18.0.0" } }, "sha512-whYUy3Ntl0cgYJgD0y5CG+Y5RNJn/JdS6Ta9Rw5yGtlBp5cz71P+Gitjs4Vu7dvx751cePtLWlCbrVadsPU+xw=="],
 
     "@couch-kit/display": ["@couch-kit/display@0.1.1", "", { "dependencies": { "@couch-kit/client": "0.9.0", "@couch-kit/core": "0.9.3", "@couch-kit/runtime": "0.1.0" } }, "sha512-+lnM0BpM9zingVr7HRZ2iRu5rNxIAlZXHOU2FRtdptMecqOnezNh1lkhSFtU97Qt9N6ZHyMc6zxB20cqGimwpA=="],
 
@@ -1299,8 +1299,6 @@
     "@babel/highlight/chalk": ["chalk@2.4.2", "", { "dependencies": { "ansi-styles": "^3.2.1", "escape-string-regexp": "^1.0.5", "supports-color": "^5.3.0" } }, "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="],
 
     "@babel/plugin-transform-runtime/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
-
-    "@couch-kit/devtools/@couch-kit/client": ["@couch-kit/client@0.8.9", "", { "dependencies": { "@couch-kit/core": "0.9.3" }, "peerDependencies": { "react": ">=18.0.0" } }, "sha512-NKE8lGAGMJ4j1uZJt0Sc963YBD8/DJrBdmeZKU6jdBSx0EE5znxt+ezXSEj6xQB5YEpvTN1fs3Sv2+RNL5PY8A=="],
 
     "@couch-kit/host/expo-file-system": ["expo-file-system@19.0.21", "", { "peerDependencies": { "expo": "*", "react-native": "*" } }, "sha512-s3DlrDdiscBHtab/6W1osrjGL+C2bvoInPJD7sOwmxfJ5Woynv2oc+Fz1/xVXaE/V7HE/+xrHC/H45tu6lZzzg=="],
 
