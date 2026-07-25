@@ -6,7 +6,7 @@ import { gameReducer, initialState } from "@my-game/shared";
 // VITE_RELAY_URL, or per-link with a `&relay=wss://...` query param.
 const DEFAULT_RELAY_URL =
   (import.meta.env.VITE_RELAY_URL as string | undefined) ??
-  "wss://couch-kit-relay.icycliff-4c194e2e.eastus.azurecontainerapps.io";
+  "wss://couch-kit-relay.faluciano.workers.dev";
 
 /**
  * Cross-network relay is **opt-in** via `?room=CODE` in the controller URL
