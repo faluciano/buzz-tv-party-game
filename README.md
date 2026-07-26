@@ -35,39 +35,62 @@ Buzz/
 
 ## Cross-Network Play (Browser Display)
 
-In addition to the offline Android TV mode, Buzz can run entirely in the browser
-so players on **different networks** can join — no native app required. A hosted
+In addition to the offline Android TV mode, Buzz runs entirely in the browser so
+players on **different networks** can join — no native app required. A hosted
 **display page** (`packages/display`) owns the authoritative game and talks to
-phones through a small, game-agnostic **relay server** (from the `@couch-kit`
-repo, `services/relay`) that you deploy yourself.
+phones through a small, game-agnostic **relay** (`@couch-kit/display` +
+`services/relay-worker` in the `@couch-kit` repo).
 
+```mermaid
+graph LR
+  subgraph PHONES["📱 Phones"]
+    P1["Player 1"]
+    P2["Player 2"]
+  end
+
+  RELAY["🔀 Relay<br/>(one room each)"]
+  DISPLAY["🖥️ Display<br/>(owns the game)"]
+
+  P1 & P2 -- "actions ➡" --> RELAY
+  RELAY -- "➡ by room" --> DISPLAY
+  DISPLAY -- "⬅ state updates" --> RELAY
+  RELAY -- "⬅ to the room" --> P1 & P2
 ```
- phone ─┐                       ┌─ display (owns the game, packages/display)
- phone ─┼─ WebSocket ─▶ relay ◀─┘
- phone ─┘                 (your Azure/Vercel/… deployment)
-```
+
+**Live:**
+
+| | |
+| --- | --- |
+| Display (put this on the TV) | https://buzz-display.pages.dev |
+| Controller (phones) | https://buzz-controller.pages.dev |
+
+Both are Cloudflare Pages projects that deploy from `main`.
+
+### How joining works
+
+The display shows a **room code** and a QR linking to
+`<controller-url>?room=CODE`. Scanning it joins that room. Opening the
+controller without a room code shows a **join screen** where the code can be
+typed — codes are case-insensitive, so reading one off a TV works. A code that
+is wrong or expired says so rather than spinning.
+
+The Android TV flow is unaffected; it still serves its own controller over the
+LAN.
 
 ### Run it locally
 
 ```bash
-# 1. Start the relay (from the @couch-kit repo): cd services/relay && bun run start
-# 2. Point the apps at your relay:
-export VITE_RELAY_URL="wss://<your-relay-host>"        # display + controller
-export VITE_CONTROLLER_URL="http://localhost:5173"     # display's join link (controller dev URL)
+# Point the apps at a relay (defaults to the deployed one if unset):
+export VITE_RELAY_URL="wss://couch-kit-relay.faluciano.workers.dev"
+export VITE_CONTROLLER_URL="http://localhost:5174"   # display's join link
 
-bun run dev:display   # open the display; it shows a room code + join link
-bun run dev:client    # the controller — open it with ?room=CODE to join that room
+bun run dev:display   # room code + join link
+bun run dev:client    # the controller
 ```
 
-The display generates a room code; open the controller at
-`<controller-url>?room=CODE` (the display shows the exact link) to connect a
-phone to that room. Without `?room=`, the controller uses the default LAN
-WebSocket, so the Android TV flow is unchanged.
-
-Both `packages/display` and `packages/client` are Vite apps — deploy them to any
-static host (e.g. Vercel) and set `VITE_RELAY_URL` / `VITE_CONTROLLER_URL` at
-build time. `RelayDisplayHost` is currently vendored in `packages/display`; it
-will move to a `@couch-kit/display` package.
+To run the relay yourself, see `services/relay-worker` (Cloudflare) or
+`services/relay` (single-process Bun server) in the `@couch-kit` repo. The relay
+URL is required config with no default in the SDK.
 
 ## Prerequisites
 
