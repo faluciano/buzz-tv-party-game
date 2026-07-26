@@ -15,34 +15,28 @@ const RELAY_URL =
 // Base URL of the deployed controller. The join link appends `?room=CODE`.
 const CONTROLLER_URL = import.meta.env.VITE_CONTROLLER_URL ?? "";
 
-// Unambiguous room code (no easily-confused characters).
-function makeRoomCode(): string {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  return Array.from(
-    { length: 4 },
-    () => alphabet[Math.floor(Math.random() * alphabet.length)],
-  ).join("");
-}
-
 export default function App() {
-  const [{ display, roomId }] = useState(() => {
-    const roomId = makeRoomCode();
-    const display = new RelayDisplayHost<GameState, GameAction>({
-      url: RELAY_URL,
-      roomId,
-      reducer: gameReducer,
-      initialState,
-    });
-    return { display, roomId };
-  });
+  // The relay assigns the code — it is the only party that can tell whether a
+  // code is already taken — so it arrives a round trip after connecting.
+  const [roomId, setRoomId] = useState<string | null>(null);
+  const [display] = useState(
+    () =>
+      new RelayDisplayHost<GameState, GameAction>({
+        url: RELAY_URL,
+        onRoomCode: setRoomId,
+        reducer: gameReducer,
+        initialState,
+      }),
+  );
 
   useEffect(() => () => display.stop(), [display]);
 
   const state = useSyncExternalStore(display.subscribe, display.getState);
   const players = Object.values(state.players).filter((p) => p.connected);
-  const joinUrl = CONTROLLER_URL
-    ? `${CONTROLLER_URL}${CONTROLLER_URL.includes("?") ? "&" : "?"}room=${roomId}`
-    : null;
+  const joinUrl =
+    CONTROLLER_URL && roomId
+      ? `${CONTROLLER_URL}${CONTROLLER_URL.includes("?") ? "&" : "?"}room=${roomId}`
+      : null;
 
   return (
     <div
@@ -82,10 +76,14 @@ export default function App() {
           </div>
         )}
         <div style={{ fontSize: "1rem", opacity: 0.7 }}>
-          {joinUrl ? "or enter room code" : "Join with room code"}
+          {!roomId
+            ? "Getting a room code…"
+            : joinUrl
+              ? "or enter room code"
+              : "Join with room code"}
         </div>
         <div style={{ fontSize: "5rem", fontWeight: 800, letterSpacing: "0.5rem" }}>
-          {roomId}
+          {roomId ?? "······"}
         </div>
         {joinUrl ? (
           <a href={joinUrl} style={{ color: "#38bdf8", fontSize: "0.9rem" }}>
@@ -93,7 +91,7 @@ export default function App() {
           </a>
         ) : (
           <div style={{ fontSize: "0.85rem", opacity: 0.6 }}>
-            Open the controller with <code>?room={roomId}</code>
+            Open the controller with <code>?room={roomId ?? "CODE"}</code>
           </div>
         )}
       </div>
