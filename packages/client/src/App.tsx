@@ -1,6 +1,12 @@
 import { useMemo } from "react";
-import { useGameClient, createRelayTransport } from "@couch-kit/client";
+import {
+  useGameClient,
+  createRelayTransport,
+  useRelayRoom,
+  describeRelayError,
+} from "@couch-kit/client";
 import { gameReducer, initialState } from "@my-game/shared";
+import { JoinScreen } from "./JoinScreen";
 
 // Default relay endpoint for cross-network play. Override at build time with
 // VITE_RELAY_URL, or per-link with a `&relay=wss://...` query param.
@@ -9,34 +15,55 @@ const DEFAULT_RELAY_URL =
   "wss://couch-kit-relay.faluciano.workers.dev";
 
 /**
- * Cross-network relay is **opt-in** via `?room=CODE` in the controller URL
- * (the browser display links to it). Without a room code the controller
- * connects over the default LAN WebSocket, exactly as before.
+ * Relay play is chosen by room code: `?room=CODE` (what the display's QR links
+ * to) or typed on the join screen. `&relay=wss://...` overrides the endpoint.
+ *
+ * With no code we show the join screen rather than attempting a LAN connection:
+ * a hosted controller has no LAN host to reach, so that attempt can only hang.
  */
-function readRelayConfig(): { roomId: string; url: string } | null {
-  if (typeof window === "undefined") return null;
-  const params = new URLSearchParams(window.location.search);
-  const room = params.get("room");
-  if (!room) return null;
-  return { roomId: room, url: params.get("relay") ?? DEFAULT_RELAY_URL };
+function relayEndpoint(): string {
+  if (typeof window === "undefined") return DEFAULT_RELAY_URL;
+  return (
+    new URLSearchParams(window.location.search).get("relay") ?? DEFAULT_RELAY_URL
+  );
 }
 
 export default function App() {
-  const relay = useMemo(readRelayConfig, []);
+  const { roomId, setRoomId } = useRelayRoom();
+
+  // The client is only mounted once a room exists. Rendering the join screen
+  // while `useGameClient` runs is not enough — with no relay transport it falls
+  // back to the LAN socket and retries a host that cannot exist here, and those
+  // retries stomp on the status the join screen is trying to report.
+  if (!roomId) return <JoinScreen onJoin={setRoomId} />;
+
+  return <Controller key={roomId} roomId={roomId} onRejoin={setRoomId} />;
+}
+
+function Controller({
+  roomId,
+  onRejoin,
+}: {
+  readonly roomId: string;
+  readonly onRejoin: (code: string) => void;
+}) {
+  const url = useMemo(relayEndpoint, []);
   const createTransport = useMemo(
-    () =>
-      relay
-        ? createRelayTransport({ url: relay.url, roomId: relay.roomId })
-        : undefined,
-    [relay],
+    () => createRelayTransport({ url, roomId }),
+    [url, roomId],
   );
 
-  const { state, sendAction, status } = useGameClient({
+  const { state, sendAction, status, disconnectReason } = useGameClient({
     reducer: gameReducer,
     initialState,
     debug: true,
     createTransport,
   });
+
+  // A terminal relay failure (wrong or expired code, full room) is worth
+  // explaining; an ordinary drop is retried and needs no screen.
+  const joinError = describeRelayError(disconnectReason);
+  if (joinError) return <JoinScreen onJoin={onRejoin} error={joinError} />;
 
   const handleBuzz = () => {
     sendAction({ type: "BUZZ" });
@@ -91,7 +118,7 @@ export default function App() {
           color: status === "connected" ? "#4ade80" : "#ef4444",
         }}
       >
-        {relay ? `Relay room ${relay.roomId}` : "LAN"}: {status}
+        {`Room ${roomId}`}: {status}
       </div>
     </div>
   );
