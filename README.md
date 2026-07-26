@@ -41,10 +41,20 @@ players on **different networks** can join — no native app required. A hosted
 phones through a small, game-agnostic **relay** (`@couch-kit/display` +
 `services/relay-worker` in the `@couch-kit` repo).
 
-```
- phone ─┐                       ┌─ display (owns the game, packages/display)
- phone ─┼─ WebSocket ─▶ relay ◀─┘
- phone ─┘        (Cloudflare Worker, one Durable Object per room)
+```mermaid
+graph LR
+  subgraph PHONES["📱 Phones"]
+    P1["Player 1"]
+    P2["Player 2"]
+  end
+
+  RELAY["🔀 Relay<br/>(one room each)"]
+  DISPLAY["🖥️ Display<br/>(owns the game)"]
+
+  P1 & P2 -- "actions ➡" --> RELAY
+  RELAY -- "➡ by room" --> DISPLAY
+  DISPLAY -- "⬅ state updates" --> RELAY
+  RELAY -- "⬅ to the room" --> P1 & P2
 ```
 
 **Live:**
