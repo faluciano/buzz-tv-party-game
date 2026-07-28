@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@couch-kit/core": "^0.9.3",
+    "@couch-kit/core": "^0.10.0",
     "@couch-kit/display": "^0.3.0",
     "@my-game/shared": "workspace:*",
     "react": "^18.2.0",
