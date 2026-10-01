@@ -10,26 +10,14 @@
       "enabled": false
     },
     {
-      "description": "Track every @couch-kit package, grouped into a single PR.",
-      "matchPackageNames": [
-        "@couch-kit/core",
-        "@couch-kit/client",
-        "@couch-kit/host",
-        "@couch-kit/devtools",
-        "@couch-kit/cli"
-      ],
+      "description": "Track every @couch-kit package, grouped into a single PR. Matched by scope rather than by name so a new package (display and runtime were both missed by the old list) is picked up without editing this file.",
+      "matchPackageNames": ["@couch-kit/**"],
       "enabled": true,
       "groupName": "couch-kit"
     },
     {
       "description": "Auto-merge non-major @couch-kit updates once CI passes; majors are held for manual review.",
-      "matchPackageNames": [
-        "@couch-kit/core",
-        "@couch-kit/client",
-        "@couch-kit/host",
-        "@couch-kit/devtools",
-        "@couch-kit/cli"
-      ],
+      "matchPackageNames": ["@couch-kit/**"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true
     }
