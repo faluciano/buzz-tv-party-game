@@ -10,11 +10,10 @@
     "prebuild": "expo prebuild"
   },
   "dependencies": {
-    "@couch-kit/host": "1.7.17",
-    "expo-file-system": "~18.0.12",
-    "expo-network": "~7.1.1",
-    "react-native-nitro-modules": "^0.33.9",
-    "react-native-nitro-http-server": "^1.6.1",
+    "@couch-kit/host": "2.1.1",
+    "expo-file-system": "~19.0.21",
+    "expo-network": "~8.0.0",
+    "react-native-nitro-modules": "^0.35.10",
     "react-native-tcp-socket": "^6.2.0",
     "expo": "~54.0.33",
     "expo-status-bar": "~3.0.9",
