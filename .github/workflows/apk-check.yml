@@ -1,0 +1,84 @@
+name: APK Check
+
+# Builds the release APK without publishing it, so native build breakage
+# (Expo prebuild, Gradle, NDK, nitro-modules version mismatches, ...) is
+# caught before merge. Typecheck and the web build cannot see any of it:
+# @couch-kit/host 2.x needs react-native-nitro-modules >= 0.35, and a mismatch
+# only shows up when the native code is compiled. Adapted from
+# card-game-engine's release-apk.yml.
+
+on:
+  pull_request:
+    paths:
+      - "packages/host/**"
+      - "bun.lock"
+      - "package.json"
+      - ".github/workflows/apk-check.yml"
+  schedule:
+    # Weekly, Monday 06:00 UTC: catches toolchain drift (SDK/NDK images,
+    # transitive native deps) even when nothing in the repo changed.
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apk-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.19"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v4
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - run: bun install --frozen-lockfile
+
+      - name: Generate native project
+        run: bunx expo prebuild --platform android
+        working-directory: packages/host
+
+      - name: Optimize Gradle for CI
+        run: |
+          {
+            echo ""
+            echo "org.gradle.java.home=$JAVA_HOME"
+            echo "org.gradle.daemon=false"
+            echo "org.gradle.caching=true"
+            echo "org.gradle.parallel=true"
+            echo "org.gradle.workers.max=4"
+            echo "org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
+            echo "kotlin.incremental=false"
+          } >> packages/host/android/gradle.properties
+
+      - name: Build client
+        run: bun run build:client
+
+      - name: Bundle client for host
+        run: bun run bundle:client
+
+      - name: Build APK
+        run: ./gradlew assembleRelease
+        working-directory: packages/host/android
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: host-release-apk
+          path: packages/host/android/app/build/outputs/apk/release/*.apk
+          retention-days: 7
