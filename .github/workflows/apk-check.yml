@@ -1,19 +1,22 @@
 name: APK Check
 
-# Builds the release APK without publishing it, so native build breakage
-# (Expo prebuild, Gradle, NDK, nitro-modules version mismatches, ...) is
-# caught before merge. Typecheck and the web build cannot see any of it:
-# @couch-kit/host 2.x needs react-native-nitro-modules >= 0.35, and a mismatch
-# only shows up when the native code is compiled. Adapted from
-# card-game-engine's release-apk.yml.
+# Proves the TV app still builds natively, which typecheck and the web build
+# cannot: a nitro-modules / Expo / React Native mismatch only shows up when the
+# native code is compiled.
+#
+# A full Gradle build is the slowest thing CI does, so it runs only when it
+# can find something:
+# - `changes` diffs the PR. Native inputs (the TV app's native config, or a
+#   React Native / Expo / Nitro / @couch-kit/host version in the lockfile) get
+#   the native build. Host JavaScript alone gets a Metro bundle, which catches
+#   bundling errors in about a minute. Anything else skips both.
+# - On PRs the native build compiles one ABI (arm64-v8a): enough to catch a
+#   native mismatch, at a fraction of the cost. The weekly and manual runs
+#   build every ABI, like a release.
+# - ccache and the Gradle cache carry compiled native objects between runs.
 
 on:
   pull_request:
-    paths:
-      - "packages/host/**"
-      - "bun.lock"
-      - "package.json"
-      - ".github/workflows/apk-check.yml"
   schedule:
     # Weekly, Monday 06:00 UTC: catches toolchain drift (SDK/NDK images,
     # transitive native deps) even when nothing in the repo changed.
@@ -28,8 +31,75 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-apk:
+  changes:
     runs-on: ubuntu-latest
+    outputs:
+      native: ${{ steps.diff.outputs.native }}
+      js: ${{ steps.diff.outputs.js }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: diff
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            echo "native=true" >> "$GITHUB_OUTPUT"
+            echo "js=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          files=$(git diff --name-only "$BASE"...HEAD)
+          native=false
+          js=false
+
+          # The TV app's native configuration, and this workflow itself.
+          if echo "$files" | grep -qE '^(packages/host/(app\.json|plugins/|babel\.config\.js|metro\.config\.js)|\.github/workflows/apk-check\.yml$)'; then
+            native=true
+          fi
+          # A native dependency changed: a React Native, Expo or Nitro package,
+          # or @couch-kit/host. Matched by name in the lockfile and the host's
+          # package.json, so a bump of a web or dev-only package does not count.
+          if git diff "$BASE"...HEAD -- bun.lock packages/host/package.json \
+            | grep -E '^[+-][^+-]' \
+            | grep -qE '^[+-]\s*"(react-native|react-native-[^"]+|@react-native/[^"]+|expo|expo-[^"]+|@expo/[^"]+|babel-preset-expo|@couch-kit/host)"'; then
+            native=true
+          fi
+          # JavaScript the TV app bundles: its own source and the shared game.
+          if echo "$files" | grep -qE '^packages/(host|shared)/'; then
+            js=true
+          fi
+
+          echo "native=$native" >> "$GITHUB_OUTPUT"
+          echo "js=$js" >> "$GITHUB_OUTPUT"
+          echo "native=$native js=$js" >> "$GITHUB_STEP_SUMMARY"
+
+  bundle-js:
+    needs: changes
+    if: needs.changes.outputs.js == 'true' && needs.changes.outputs.native != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.19"
+
+      - run: bun install --frozen-lockfile
+
+      - name: Bundle the TV app's JavaScript with Metro
+        run: bunx expo export --platform android --output-dir "$RUNNER_TEMP/export"
+        working-directory: packages/host
+
+  build-apk:
+    needs: changes
+    if: needs.changes.outputs.native == 'true'
+    runs-on: ubuntu-latest
+    env:
+      # PRs compile one ABI; scheduled and manual runs compile them all.
+      ABI_FLAG: ${{ github.event_name == 'pull_request' && '-PreactNativeArchitectures=arm64-v8a' || '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -42,6 +112,8 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
+      # v4, not v3: v3 installs the legacy `tools` package by default, which
+      # the SDK repository no longer serves.
       - uses: android-actions/setup-android@v4
 
       - name: Setup Gradle
@@ -72,9 +144,33 @@ jobs:
       - name: Bundle client for host
         run: bun run bundle:client
 
+      # React Native's CMake picks up ccache on its own when it is on PATH.
+      # CI downloads the NDK fresh each run, so compare compilers by content,
+      # not mtime, to get real hits across runs.
+      - name: Set up ccache
+        run: |
+          mkdir -p "$HOME/.cache/ccache"
+          command -v ccache >/dev/null 2>&1 || sudo apt-get install -y ccache || true
+          echo "CCACHE_DIR=$HOME/.cache/ccache" >> "$GITHUB_ENV"
+          echo "CCACHE_COMPILERCHECK=content" >> "$GITHUB_ENV"
+          echo "CCACHE_MAXSIZE=2G" >> "$GITHUB_ENV"
+
+      - name: Restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-apk-${{ runner.os }}-${{ hashFiles('bun.lock') }}-${{ github.sha }}
+          restore-keys: |
+            ccache-apk-${{ runner.os }}-${{ hashFiles('bun.lock') }}-
+            ccache-apk-${{ runner.os }}-
+
       - name: Build APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease $ABI_FLAG
         working-directory: packages/host/android
+
+      - name: ccache statistics
+        if: always()
+        run: ccache --show-stats 2>/dev/null >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
