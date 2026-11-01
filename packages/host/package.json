@@ -10,7 +10,7 @@
     "prebuild": "expo prebuild"
   },
   "dependencies": {
-    "@couch-kit/host": "2.1.1",
+    "@couch-kit/host": "2.1.7",
     "expo-file-system": "~19.0.21",
     "expo-network": "~8.0.0",
     "react-native-nitro-modules": "^0.35.10",
@@ -24,7 +24,7 @@
   },
   "private": true,
   "devDependencies": {
-    "@couch-kit/cli": "0.3.12",
+    "@couch-kit/cli": "0.4.0",
     "@types/react": "~19.1.10",
     "babel-preset-expo": "^54.0.10",
     "typescript": "~5.9.2"
